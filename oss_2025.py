@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from collections import Counter
 import numpy as np
-
+import matplotlib.pyplot as plt 
 # .sas7bdat 파일 경로
 file_path = r'C:\Users\minse\Downloads\HN23_ALL\hn23_all.sas7bdat'
 
@@ -290,6 +290,55 @@ try: # --- try 블록 시작 ---
     else:
         print("콜레스테롤 위험군을 식별하는 데 필요한 '총 콜레스테롤' 컬럼이 없습니다.")
     # --- 각 지표별 위험군 필터링 및 리스트 저장 끝 ---
+
+
+
+
+    # --- 6가지 주요 기저질환별 환자 수 시각화 (추가된 부분) ---
+    print("\n\n############################################")
+    print("### 6가지 주요 기저질환별 환자 수 시각화 ###")
+    print("############################################")
+
+    # 각 위험군별 환자 수 계산
+    risk_category_counts = {
+        '고혈압': len(hypertension_risk_ids),
+        '비만': len(obesity_risk_ids),
+        '혈당': len(glucose_risk_ids),
+        '당뇨': len(diabetes_risk_ids),
+        '중성지방': len(tg_risk_ids),
+        '콜레스테롤': len(cholesterol_risk_ids)
+    }
+
+    # x축 레이블과 y축 값 준비
+    categories = list(risk_category_counts.keys())
+    counts = list(risk_category_counts.values())
+
+    # 막대 그래프 생성
+    plt.figure(figsize=(12, 7)) # 그래프 크기 설정
+    bars = plt.bar(categories, counts, color='skyblue')
+
+    # 그래프 제목 및 축 레이블 설정
+    plt.title('6가지 주요 기저질환별 65세 이상 노인 환자 수', fontsize=16)
+    plt.xlabel('기저질환 종류', fontsize=14)
+    plt.ylabel('환자 수', fontsize=14)
+    plt.xticks(fontsize=12, rotation=45, ha='right') # x축 레이블 기울기 및 정렬
+    plt.yticks(fontsize=12)
+
+    # 각 막대 위에 환자 수 표시
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval), ha='center', va='bottom', fontsize=10)
+
+
+    plt.grid(axis='y', linestyle='--', alpha=0.7) # y축 그리드 라인 추가
+    plt.tight_layout() # 레이블이 잘리지 않도록 레이아웃 조정
+    plt.show() # 그래프 표시
+
+    print("--- 6가지 주요 기저질환별 환자 수 시각화 완료 ---")
+
+
+
+
 
 
     # --- 다중 위험군 분류 시작 ---
