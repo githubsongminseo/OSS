@@ -3,6 +3,12 @@ import os
 from collections import Counter
 import numpy as np
 import matplotlib.pyplot as plt 
+
+
+# --- 폰트 오류 해결 ....---
+plt.rcParams['font.family'] = 'Malgun Gothic' 
+plt.rcParams['axes.unicode_minus'] = False 
+
 # .sas7bdat 파일 경로
 file_path = r'C:\Users\minse\Downloads\HN23_ALL\hn23_all.sas7bdat'
 
@@ -193,14 +199,17 @@ try: # --- try 블록 시작 ---
         print("\n경고: '나이' 컬럼이 없어 65세 이상 필터링을 건너뜁니다.")
 
     print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 (상위 5개 행, 모든 컬럼 한글명으로 표시) ---")
-    #print(selected_df.head(5))
-    print(selected_df)
+    print(selected_df.head(5))
+    #print(selected_df)
+    
 
-    print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 정보 (df.info()) ---")
-    selected_df.info()
+    #print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 정보 (df.info()) ---")
+    #selected_df.info()
 
-    print("\n--- 선택된 컬럼들로 구성된 데이터프레임 컬럼 목록 (한글명) ---")
-    print(selected_df.columns.tolist())
+
+
+    #print("\n--- 선택된 컬럼들로 구성된 데이터프레임 컬럼 목록 (한글명) ---")
+    #print(selected_df.columns.tolist())
 
     ###################### 1. 고혈압 위험군 (수축기혈압 120 이상, 이완기혈압 80이상)
     print("\n--- 고혈압 위험군 데이터 추출 ---")
@@ -217,7 +226,7 @@ try: # --- try 블록 시작 ---
             print(f"고혈압 위험군을 {len(hypertension_risk_group_df)}명 찾았습니다.")
             print("\n--- 고혈압 위험군 데이터프레임 (상위 5개 행) ---")
             print(hypertension_risk_group_df.head(5))
-            hypertension_risk_ids = hypertension_risk_group_df['개인표본조사구'].tolist()
+            hypertension_risk_ids = hypertension_risk_group_df['ID'].tolist()
             print(f"\n--- 고혈압 위험군 ID 리스트 (상위 5개) ---")
             print(hypertension_risk_ids[:5])
         else:
@@ -236,7 +245,7 @@ try: # --- try 블록 시작 ---
         obesity_risk_df = selected_df[
             (selected_df['체질량지수'].notna()) & (selected_df['체질량지수'] >= 23)
         ].copy()
-        obesity_risk_ids = obesity_risk_df['개인표본조사구'].tolist()
+        obesity_risk_ids = obesity_risk_df['ID'].tolist()
         print(f"\n- 비만 위험군 ({len(obesity_risk_ids)}명) ID 리스트 (상위 5개):")
         print(obesity_risk_ids[:5])
     else:
@@ -248,7 +257,7 @@ try: # --- try 블록 시작 ---
         glucose_risk_df = selected_df[
             (selected_df['공복혈당'].notna()) & (selected_df['공복혈당'] >= 100)
         ].copy()
-        glucose_risk_ids = glucose_risk_df['개인표본조사구'].tolist()
+        glucose_risk_ids = glucose_risk_df['ID'].tolist()
         print(f"\n- 혈당 위험군 ({len(glucose_risk_ids)}명) ID 리스트 (상위 5개):")
         print(glucose_risk_ids[:5])
     else:
@@ -260,7 +269,7 @@ try: # --- try 블록 시작 ---
         diabetes_risk_df = selected_df[
             (selected_df['공복혈당'].notna()) & (selected_df['공복혈당'] >= 126)
         ].copy()
-        diabetes_risk_ids = diabetes_risk_df['개인표본조사구'].tolist()
+        diabetes_risk_ids = diabetes_risk_df['ID'].tolist()
         print(f"\n- 당뇨 위험군 ({len(diabetes_risk_ids)}명) ID 리스트 (상위 5개):")
         print(diabetes_risk_ids[:5])
     else:
@@ -272,7 +281,7 @@ try: # --- try 블록 시작 ---
         tg_risk_df = selected_df[
             (selected_df['중성지방'].notna()) & (selected_df['중성지방'] >= 150)
         ].copy()
-        tg_risk_ids = tg_risk_df['개인표본조사구'].tolist()
+        tg_risk_ids = tg_risk_df['ID'].tolist()
         print(f"\n- 중성지방 위험군 ({len(tg_risk_ids)}명) ID 리스트 (상위 5개):")
         print(tg_risk_ids[:5])
     else:
@@ -284,7 +293,7 @@ try: # --- try 블록 시작 ---
         cholesterol_risk_df = selected_df[
             (selected_df['총 콜레스테롤'].notna()) & (selected_df['총 콜레스테롤'] >= 200)
         ].copy()
-        cholesterol_risk_ids = cholesterol_risk_df['개인표본조사구'].tolist()
+        cholesterol_risk_ids = cholesterol_risk_df['ID'].tolist()
         print(f"\n- 콜레스테롤 위험군 ({len(cholesterol_risk_ids)}명) ID 리스트 (상위 5개):")
         print(cholesterol_risk_ids[:5])
     else:
@@ -318,9 +327,9 @@ try: # --- try 블록 시작 ---
     bars = plt.bar(categories, counts, color='skyblue')
 
     # 그래프 제목 및 축 레이블 설정
-    plt.title('6가지 주요 기저질환별 65세 이상 노인 환자 수', fontsize=16)
-    plt.xlabel('기저질환 종류', fontsize=14)
-    plt.ylabel('환자 수', fontsize=14)
+    plt.title('Number of Elderly Patients by Chronic Disease', fontsize=16)
+    plt.xlabel('Chronic diseases', fontsize=14)
+    plt.ylabel('NUMBER of patients', fontsize=14)
     plt.xticks(fontsize=12, rotation=45, ha='right') # x축 레이블 기울기 및 정렬
     plt.yticks(fontsize=12)
 
