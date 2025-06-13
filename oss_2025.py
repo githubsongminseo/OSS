@@ -73,7 +73,7 @@ try:
         print(f"존재하는 컬럼들로 데이터프레임을 생성합니다: {existing_columns}")
         selected_df = df[existing_columns]
     else:
-        print(f"필요한 모든 컬럼 {required_columns}이(가) 데이터프레임에 존재합니다.")
+        #print(f"필요한 모든 컬럼 {required_columns}이(가) 데이터프레임에 존재합니다.")
         selected_df = df[required_columns]
 
     # 컬럼명 변경
@@ -85,13 +85,13 @@ try:
     if 'age' in selected_df.columns:
         initial_row_count = len(selected_df)
         selected_df = selected_df[selected_df['age'] >= 65].copy()
-        print(f"\n--- 65세 이상 노인 데이터로 필터링 완료 ---")
-        print(f"원본 데이터 {initial_row_count} 행에서 65세 이상 {len(selected_df)} 행으로 필터링되었습니다.")
+        #print(f"\n--- 65세 이상 노인 데이터로 필터링 완료 ---")
+        #print(f"원본 데이터 {initial_row_count} 행에서 65세 이상 {len(selected_df)} 행으로 필터링되었습니다.")
     else:
         print("\n경고: '나이' 컬럼이 없어 65세 이상 필터링을 건너뜁니다.")
 
-    print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 (상위 5개 행, 모든 컬럼 한글명으로 표시) ---")
-    print(selected_df.head(5))
+    #print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 (상위 5개 행, 모든 컬럼 한글명으로 표시) ---")
+    #print(selected_df.head(5))
     # print(selected_df)
 
     # print("\n--- 선택된 컬럼들로 구성된 요약 데이터프레임 정보 (df.info()) ---")
@@ -106,8 +106,8 @@ try:
     # 'age' 컬럼이 65세 이상인 데이터만 필터링하여 새 DataFrame 생성
     if 'age' in df.columns:
         df_senior = df[df['age'] >= 65]
-        print(f"\n--- 65세 이상으로 필터링된 데이터프레임 (총 {len(df_senior)}개 행) ---")
-        print(df_senior.head(5))
+        #print(f"\n--- 65세 이상으로 필터링된 데이터프레임 (총 {len(df_senior)}개 행) ---")
+        #print(df_senior.head(5))
     else:
         print("\n경고: 'age' 컬럼이 데이터프레임에 없어 65세 이상 필터링을 수행할 수 없습니다.")
     #-----------------------------------------------------------------
@@ -146,8 +146,8 @@ try:
             (selected_df['체질량지수'].notna()) & (selected_df['체질량지수'] >= 25)
             ].copy()
         obesity_risk_ids = obesity_risk_df['ID'].tolist()
-        print(f"\n- 2.비만 위험군 ({len(obesity_risk_ids)}명) ID 리스트 (상위 5개):")
-        print(obesity_risk_ids[:5])
+        #print(f"\n- 2.비만 위험군 ({len(obesity_risk_ids)}명) ID 리스트 (상위 5개):")
+        #print(obesity_risk_ids[:5])
     else:
         print("비만 위험군을 식별하는 데 필요한 '체질량지수' 컬럼이 없습니다.")
     #----------------------------------------------------------------------------
@@ -160,8 +160,8 @@ try:
             (selected_df['공복혈당'].notna()) & (selected_df['공복혈당'] >= 126)
             ].copy()
         diabetes_risk_ids = diabetes_risk_df['ID'].tolist()
-        print(f"\n- 3.당뇨 위험군 ({len(diabetes_risk_ids)}명) ID 리스트 (상위 5개):")
-        print(diabetes_risk_ids[:5])
+        #print(f"\n- 3.당뇨 위험군 ({len(diabetes_risk_ids)}명) ID 리스트 (상위 5개):")
+        #print(diabetes_risk_ids[:5])
     else:
         print("당뇨 위험군을 식별하는 데 필요한 '공복혈당' 컬럼이 없습니다.")
     #--------------------------------------------------------------------------------
@@ -183,8 +183,8 @@ try:
 
         risk_ids = combined_risk_df['ID'].tolist()
 
-        print(f"\n- 4.고지질혈증 위험군 ({len(risk_ids)}명) ID 리스트 (상위 5개):")
-        print(risk_ids[:5])
+        #print(f"\n- 4.고지질혈증 위험군 ({len(risk_ids)}명) ID 리스트 (상위 5개):")
+        #print(risk_ids[:5])
 
     else:
         print("중성지방 및/또는 총 콜레스테롤 컬럼이 없습니다.")
@@ -217,8 +217,8 @@ try:
 
     selected_df['level'] = selected_df['질병_개수'].apply(assign_level)
     # 결과 확인
-    print("\n--- 최종 데이터프레임 (상위 5개 행) ---")
-    print(selected_df[['ID', '고혈압', '비만', '당뇨병', '이상지질혈증', '질병_개수', 'level']].head(5))
+    #print("\n--- 최종 데이터프레임 (상위 5개 행) ---")
+    #print(selected_df[['ID', '고혈압', '비만', '당뇨병', '이상지질혈증', '질병_개수', 'level']].head(5))
 
 
 
@@ -257,7 +257,7 @@ finally:  # --- finally 블록 시작 ---
     pd.set_option('display.unicode.east_asian_width', original_unicode_east_asian_width)
     pd.set_option('display.max_rows', original_max_rows)
     pd.set_option('display.max_colwidth', original_max_colwidth)
-    print("\n--- Pandas 출력 옵션이 초기화되었습니다. ---")
+    #print("\n--- Pandas 출력 옵션이 초기화되었습니다. ---")
 
 
 
