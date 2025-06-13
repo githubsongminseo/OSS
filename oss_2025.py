@@ -44,11 +44,12 @@ try:
     # 사용할 필수 기본 정보 컬럼 목록 (가장 왼쪽에 위치)
     base_columns = ['ID', 'sex', 'age']
 
-    # 사용할 건강지수지표 컬럼 목록
+    # ----(1) 사용할 건강지수지표 컬럼 목록------------------------------------------------------
     health_columns = ['HE_TG', 'HE_chol', 'HE_BMI', 'HE_LDL_drct', 'HE_HDL_st2', 'HE_glu', 'HE_sbp', 'HE_dbp']
 
     # 모든 필수 컬럼들을 합쳐 순서대로 정렬
     required_columns = base_columns + health_columns
+
 
     # 컬럼명 매핑 딕셔너리 (영문: 한글)
     column_name_mapping = {
@@ -80,8 +81,12 @@ try:
     rename_map_for_selected_df = {eng_name: kor_name for eng_name, kor_name in column_name_mapping.items() if
                                   eng_name in selected_df.columns}
     selected_df = selected_df.rename(columns=rename_map_for_selected_df)
+    
+    
+    
 
-    # --- 65세 이상 노인 데이터로 필터링 추가 ---
+
+    # --- (2) 65세 이상 노인 데이터로 필터링 추가 -----------------------------------------
     if 'age' in selected_df.columns:
         initial_row_count = len(selected_df)
         selected_df = selected_df[selected_df['age'] >= 65].copy()
@@ -101,22 +106,20 @@ try:
     # print(selected_df.columns.tolist())
 
 
-    #-------------------df_senior 데이터프레임----------------------------#
-    # 추가로 전체 건강상태 데이터에서 65세 이상만 뽑아냄 (열 선택없이) (sklearn학습용)
-    # 'age' 컬럼이 65세 이상인 데이터만 필터링하여 새 DataFrame 생성
+    #-------------------df_senior 데이터프레임----------------------------
     if 'age' in df.columns:
         df_senior = df[df['age'] >= 65]
         #print(f"\n--- 65세 이상으로 필터링된 데이터프레임 (총 {len(df_senior)}개 행) ---")
         #print(df_senior.head(5))
     else:
         print("\n경고: 'age' 컬럼이 데이터프레임에 없어 65세 이상 필터링을 수행할 수 없습니다.")
-    #-----------------------------------------------------------------
+
+    #---------------------------------------------------------------------------------------------------------
 
 
 
-
-
-    ##########################################################################################################################################
+    #######################################################################################################################################
+    
     #----------------1. 고혈압 위험군 (수축기혈압 120 이상, 이완기혈압 80이상)
     hypertension_risk_ids = []
     if '최종 수축기 혈압' in selected_df.columns and '최종 이완기혈압' in selected_df.columns:
@@ -191,13 +194,18 @@ try:
     #----------------------------------------------------------------------------------
     ##############################################################################################
 
+
+
+
     # ---------------- 질병 여부 열 추가  ----------------
     selected_df['고혈압'] = selected_df['ID'].apply(lambda x: 1 if x in hypertension_risk_ids else 0)
     selected_df['비만'] = selected_df['ID'].apply(lambda x: 1 if x in obesity_risk_ids else 0)
     selected_df['당뇨병'] = selected_df['ID'].apply(lambda x: 1 if x in diabetes_risk_ids else 0)
     selected_df['이상지질혈증'] = selected_df['ID'].apply(lambda x: 1 if x in risk_ids else 0)
+    
+    
 
-    # ---------------- 위험도 level 분류 ----------------
+    # ---------------- 위험도 level 분류 --------------------------------------------------------
     selected_df['질병_개수'] = selected_df[['고혈압', '비만', '당뇨병', '이상지질혈증']].sum(axis=1)
 
 
@@ -219,13 +227,13 @@ try:
     # 결과 확인
     #print("\n--- 최종 데이터프레임 (상위 5개 행) ---")
     #print(selected_df[['ID', '고혈압', '비만', '당뇨병', '이상지질혈증', '질병_개수', 'level']].head(5))
+    #------------------------------------------------------------------------------------------------------------
 
 
 
 
 
-
-    ###---------------- 질병 보유자 수 시각화 ----------------
+    ###---------------- 질병 보유자 수 시각화 -------------------------------------------------------------------------
     disease_counts = {
         '고혈압': selected_df['고혈압'].sum(),
         '비만': selected_df['비만'].sum(),
@@ -241,11 +249,13 @@ try:
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
     plt.show()
+    #-------------------------------------------------------------------------------------------------
 
 
 
 
-except FileNotFoundError as e:  # --- except 블록 시작 ---
+ # --- except 블록 시작 ---
+except FileNotFoundError as e: 
     print(f"오류: {e}")
 except Exception as e:  # 다른 모든 예외를 처리
     print(f"파일을 읽거나 처리하는 중 오류가 발생했습니다: {e}")
